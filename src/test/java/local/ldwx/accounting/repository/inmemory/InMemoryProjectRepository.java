@@ -1,4 +1,4 @@
-package local.ldwx.accounting.repository.mock;
+package local.ldwx.accounting.repository.inmemory;
 
 import local.ldwx.accounting.model.Project;
 import local.ldwx.accounting.repository.ProjectRepository;

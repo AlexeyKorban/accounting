@@ -1,8 +1,8 @@
 package local.ldwx.accounting.model;
 
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Set;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
 
 import static local.ldwx.accounting.util.ProjectsUtil.DEFAULT_SUM_PER_DAY;
 
@@ -20,17 +20,24 @@ public class User extends AbstractNamedEntity{
 
     private int sumPerDay = DEFAULT_SUM_PER_DAY;
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles, int sumPerDay) {
+    public User() {}
+
+    public User(Integer id, String name, String email, String password, int sumPerDay, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.enabled = enabled;
-        this.roles = roles;
         this.sumPerDay = sumPerDay;
+        this.enabled = enabled;
+        this.registered = registered;
+        setRoles(roles);
     }
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, true, EnumSet.of(role, roles), DEFAULT_SUM_PER_DAY);
+        this(id, name, email, password, DEFAULT_SUM_PER_DAY, true, new Date(), EnumSet.of(role, roles));
+    }
+
+    public User(User u) {
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getSumPerDay(), u.isEnabled(), u.getRegistered(), u.getRoles());
     }
 
     public String getEmail() {
@@ -69,8 +76,8 @@ public class User extends AbstractNamedEntity{
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? Collections.emptySet() : EnumSet.copyOf(roles);
     }
 
     public int getSumPerDay() {

@@ -3,6 +3,8 @@ package local.ldwx.accounting.model;
 public class AbstractNamedEntity extends AbstractBaseEntity{
     protected String name;
 
+    public AbstractNamedEntity() {}
+
     public AbstractNamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
