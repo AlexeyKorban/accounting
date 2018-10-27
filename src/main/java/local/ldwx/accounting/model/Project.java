@@ -5,11 +5,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Project extends AbstractBaseEntity {
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
-    private final String description;
+    private String description;
 
-    private final int sum;
+    private int sum;
+
+    public Project() {
+    }
 
     public Project(Integer id, LocalDateTime dateTime, String description, int summ) {
         super(id);
@@ -40,6 +43,18 @@ public class Project extends AbstractBaseEntity {
 
     public LocalTime getTime() {
         return dateTime.toLocalTime();
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setSum(int sum) {
+        this.sum = sum;
     }
 
     @Override
