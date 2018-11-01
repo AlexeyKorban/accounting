@@ -12,8 +12,6 @@
 
     <context:component-scan base-package="local.ldwx.**.repository.jpa"/>
 
-
-
     <jdbc:initialize-database data-source="dataSource" enabled="true">
         <jdbc:script location="classpath:db/initDB.sql"/>
         <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
