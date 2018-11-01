@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS users;
-DROP SEQUENCE if exists global_seq;
+DROP SEQUENCE IF EXISTS global_seq;
 
 CREATE SEQUENCE global_seq START 100000;
 
