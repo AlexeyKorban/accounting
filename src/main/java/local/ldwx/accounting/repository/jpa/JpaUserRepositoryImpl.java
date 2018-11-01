@@ -2,6 +2,7 @@ package local.ldwx.accounting.repository.jpa;
 
 import local.ldwx.accounting.model.User;
 import local.ldwx.accounting.repository.UserRepository;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,26 +20,38 @@ public class JpaUserRepositoryImpl implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
-        return null;
+        if (user.isNew()) {
+            em.persist(user);
+            return user;
+        } else {
+            return em.merge(user);
+        }
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
-        return false;
+        return em.createNamedQuery(User.DELETE)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
     public User get(int id) {
-        return null;
+        return em.find(User.class, id);
     }
 
     @Override
     public User getByEmail(String email) {
-        return null;
+        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class)
+                .setParameter(1, email)
+                .getResultList();
+        return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        return em.createNamedQuery(User.ALL_SORTED, User.class)
+                .getResultList();
     }
 }
