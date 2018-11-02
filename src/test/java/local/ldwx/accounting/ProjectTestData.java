@@ -34,7 +34,7 @@ public class ProjectTestData {
     }
 
     public static void assertMatch(Project actual, Project expected) {
-        assertThat(actual).isEqualToComparingFieldByField(expected);
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "user");
     }
 
     public static void assertMatch(Iterable<Project> actual, Project... expected) {
@@ -42,6 +42,6 @@ public class ProjectTestData {
     }
 
     public static void assertMatch(Iterable<Project> actual, Iterable<Project> expected) {
-        assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields("user").isEqualTo(expected);
     }
 }

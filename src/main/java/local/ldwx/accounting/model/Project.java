@@ -3,41 +3,43 @@ package local.ldwx.accounting.model;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NamedQueries({
-        @NamedQuery(name = Project.UPDATE, query = "UPDATE Project p SET p=:p WHERE p.user.id=userId"),
-        @NamedQuery(name = Project.FIND, query = "SELECT p FROM Project p WHERE p.id=:id and p.user.id=:userId"),
-        @NamedQuery(name = Project.DELETE, query = "DELETE FROM Project p WHERE p.id=:id and p.user.id=:userId"),
-        @NamedQuery(name = Project.ALL_SORTED, query = "SELECT p FROM Project p WHERE p.user.id=:userId ORDER BY p.dateTime DESC "),
-        @NamedQuery(name = Project.ALL_BETWEEN, query = "SELECT p FROM Project p WHERE p.user.id=:userId AND p.dateTime BETWEEN ?2 AND ?3 ORDER BY p.dateTime DESC"),
+        @NamedQuery(name = Project.ALL_SORTED, query = "SELECT p FROM Project p WHERE p.user.id=:userId ORDER BY p.dateTime DESC"),
+        @NamedQuery(name = Project.DELETE, query = "DELETE FROM Project p WHERE p.id=:id AND p.user.id=:userId"),
+        @NamedQuery(name = Project.GET_BETWEEN, query = "SELECT p FROM Project p " +
+                "WHERE p.user.id=:userId AND p.dateTime BETWEEN :startDate AND :endDate ORDER BY p.dateTime DESC"),
 })
 @Entity
-@Table(name = "projects", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "projects_unique_user_datetime_idx"))
+@Table(name = "projects", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "projects_unique_user_datetime_idx")})
 public class Project extends AbstractBaseEntity {
 
-    public static final String FIND = "Project.find";
-    public static final String UPDATE = "Project.update";
     public static final String DELETE = "Project.delete";
-    public static final String ALL_BETWEEN = "Project.getAllBetween";
+    public static final String GET_BETWEEN = "Project.getAllBetween";
     public static final String ALL_SORTED = "Project.getAllSorted";
 
-    @Column(name = "date_time", columnDefinition = "timestamp default now()")
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
 
-    @Column(name ="description", nullable = false)
+    @Column(name = "description", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 120)
     private String description;
 
-    @Column(name = "sum")
-    @Range(min = 1, max = 10000)
+    @Column(name = "sum", nullable = false)
+    @Range(min = 10, max = 5000)
     private int sum;
 
-    @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     public Project() {
