@@ -20,4 +20,8 @@ public interface ProjectRepository {
 
     // ORDERED dateTime desc
     List<Project> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
+
+    default Project getWithUser(int id, int userId) {
+        throw new UnsupportedOperationException();
+    }
 }
