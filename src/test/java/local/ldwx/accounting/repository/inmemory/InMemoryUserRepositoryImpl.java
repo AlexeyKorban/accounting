@@ -1,5 +1,6 @@
 package local.ldwx.accounting.repository.inmemory;
 
+import local.ldwx.accounting.UserTestData;
 import local.ldwx.accounting.model.User;
 import local.ldwx.accounting.repository.UserRepository;
 import org.springframework.stereotype.Repository;
@@ -7,21 +8,29 @@ import org.springframework.stereotype.Repository;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-@Repository
-public class InMemoryUserRepository implements UserRepository {
+import static local.ldwx.accounting.UserTestData.ADMIN;
+import static local.ldwx.accounting.UserTestData.USER;
 
-    public static final int USER_ID = 1;
-    public static final int ADMIN_ID = 2;
+@Repository
+public class InMemoryUserRepositoryImpl implements UserRepository {
 
     private Map<Integer, User> repository = new ConcurrentHashMap<>();
-    private AtomicInteger counter = new AtomicInteger(0);
+    private AtomicInteger counter = new AtomicInteger(100);
+
+    public void init(){
+        repository.clear();
+        repository.put(UserTestData.USER_ID, USER);
+        repository.put(UserTestData.ADMIN_ID, ADMIN);
+    }
 
     @Override
     public User save(User user) {
+        Objects.requireNonNull(user, "user must  not be null");
         if (user.isNew()) {
             user.setId(counter.incrementAndGet());
             repository.put(user.getId(), user);
@@ -42,8 +51,9 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
+        Objects.requireNonNull(email, "email must not be null");
         return repository.values().stream()
-                .filter(u -> u.getEmail().equals(email))
+                .filter(u -> email.equals(u.getEmail()))
                 .findFirst()
                 .orElse(null);
     }
