@@ -54,6 +54,10 @@ public class User extends AbstractNamedEntity{
     @Range(min = 10, max = 10000)
     private int sumPerDay = DEFAULT_SUM_PER_DAY;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OrderBy("dateTime DESC")
+    protected List<Project> projects;
+
     public User() {}
 
     public User(Integer id, String name, String email, String password, int sumPerDay, boolean enabled, Date registered, Collection<Role> roles) {
@@ -120,6 +124,10 @@ public class User extends AbstractNamedEntity{
 
     public void setSumPerDay(int sumPerDay) {
         this.sumPerDay = sumPerDay;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
     }
 
     @Override

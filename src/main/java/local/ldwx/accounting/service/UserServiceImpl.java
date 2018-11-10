@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         return repository.getAll();
     }
+
+    @Override
+    public User getWithProjects(int id) {
+        return checkNotFoundWithId(repository.getWithProjects(id), id);
+    }
 }
