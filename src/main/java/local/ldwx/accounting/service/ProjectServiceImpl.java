@@ -50,4 +50,9 @@ public class ProjectServiceImpl implements ProjectService {
     public Project create(Project project, int userId) {
         return repository.save(project, userId);
     }
+
+    @Override
+    public Project getWithUser(int id, int userId) {
+        return checkNotFoundWithId(repository.getWithUser(id, userId), id);
+    }
 }

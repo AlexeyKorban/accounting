@@ -3,14 +3,7 @@ package local.ldwx.accounting.service;
 import local.ldwx.accounting.model.Project;
 import local.ldwx.accounting.util.exception.NotFoundException;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -19,20 +12,10 @@ import static local.ldwx.accounting.ProjectTestData.*;
 import static local.ldwx.accounting.UserTestData.ADMIN_ID;
 import static local.ldwx.accounting.UserTestData.USER_ID;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles({"datajpa", "postgres"})
-public class ProjectServiceTest {
-    static {
-        SLF4JBridgeHandler.install();
-    }
+public abstract class AbstractProjectServiceTest extends AbstractServiceTest{
 
     @Autowired
-    private ProjectService service;
+    protected ProjectService service;
 
     @Test
     public void delete() throws Exception {

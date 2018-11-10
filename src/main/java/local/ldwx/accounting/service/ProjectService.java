@@ -24,4 +24,6 @@ public interface ProjectService {
     void update(Project project, int userId) throws NotFoundException;
 
     Project create(Project project, int userId);
+
+    Project getWithUser(int id, int userId);
 }
