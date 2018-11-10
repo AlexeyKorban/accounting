@@ -1,5 +1,6 @@
 package local.ldwx.accounting.web;
 
+import local.ldwx.accounting.Profiles;
 import local.ldwx.accounting.model.Project;
 import local.ldwx.accounting.web.project.ProjectRestController;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -28,7 +29,9 @@ public class ProjectServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
+        springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
+        springContext.refresh();
         projectController = springContext.getBean(ProjectRestController.class);
     }
 
