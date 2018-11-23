@@ -18,4 +18,6 @@ public interface UserService {
     void update(User user);
 
     List<User> getAll();
+
+    User getWithProjects(int id);
 }
