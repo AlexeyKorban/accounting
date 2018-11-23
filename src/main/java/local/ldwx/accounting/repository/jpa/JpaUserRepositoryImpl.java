@@ -2,6 +2,7 @@ package local.ldwx.accounting.repository.jpa;
 
 import local.ldwx.accounting.model.User;
 import local.ldwx.accounting.repository.UserRepository;
+import org.hibernate.jpa.QueryHints;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,7 @@ public class JpaUserRepositoryImpl implements UserRepository {
     public User getByEmail(String email) {
         List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class)
                 .setParameter(1, email)
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                 .getResultList();
         return DataAccessUtils.singleResult(users);
     }
