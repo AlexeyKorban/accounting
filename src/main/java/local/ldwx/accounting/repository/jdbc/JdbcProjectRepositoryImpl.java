@@ -11,12 +11,14 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class JdbcProjectRepositoryImpl implements ProjectRepository {
 
      private static final RowMapper<Project> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Project.class);
@@ -38,6 +40,7 @@ public class JdbcProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
+    @Transactional
     public Project save(Project project, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", project.getId())
@@ -61,6 +64,7 @@ public class JdbcProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
         return jdbcTemplate.update("DELETE FROM projects WHERE id=? AND user_id=?", id, userId) != 0;
     }
