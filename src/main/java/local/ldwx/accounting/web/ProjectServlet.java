@@ -1,7 +1,7 @@
 package local.ldwx.accounting.web;
 
 import local.ldwx.accounting.model.Project;
-import local.ldwx.accounting.web.project.ProjectRestController;
+import local.ldwx.accounting.web.project.AbstractProjectController;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -23,13 +23,13 @@ import static local.ldwx.accounting.util.DateTimeUtil.parseLocalTime;
 public class ProjectServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
-    private ProjectRestController projectController;
+    private AbstractProjectController projectController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
-        projectController = springContext.getBean(ProjectRestController.class);
+        projectController = springContext.getBean(AbstractProjectController.class);
     }
 
     @Override

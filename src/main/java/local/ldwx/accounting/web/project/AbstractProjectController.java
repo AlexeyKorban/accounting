@@ -15,19 +15,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import static local.ldwx.accounting.util.Util.orElse;
 import static local.ldwx.accounting.util.ValidationUtil.assureIdConsistent;
 import static local.ldwx.accounting.util.ValidationUtil.checkNew;
 
 @Controller
-public class ProjectRestController {
-    private static final Logger log = LoggerFactory.getLogger(ProjectRestController.class);
-    
-    private final ProjectService service;
+public abstract class AbstractProjectController {
+    private static final Logger log = LoggerFactory.getLogger(AbstractProjectController.class);
 
     @Autowired
-    public ProjectRestController(ProjectService service) {
-        this.service = service;
-    }
+    private ProjectService service;
 
     public Project get(int id) {
         int userId = SecurityUtil.authUserId();
@@ -76,8 +73,8 @@ public class ProjectRestController {
                 endDate != null ? endDate : DateTimeUtil.MAX_DATE, userId);
 
         return ProjectsUtil.getFilteredWithExcess(mealsDateFiltered, SecurityUtil.authUserSumPerDay(),
-                startTime != null ? startTime : LocalTime.MIN,
-                endTime != null ? endTime : LocalTime.MAX
+                orElse(startTime, LocalTime.MIN),
+                orElse(endTime, LocalTime.MAX)
         );
     }
 }
