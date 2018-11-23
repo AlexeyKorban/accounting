@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import static local.ldwx.accounting.util.DateTimeUtil.parseLocalDate;
@@ -29,6 +30,12 @@ public class JspProjectController extends AbstractProjectController{
     @GetMapping("/update")
     public String update(HttpServletRequest request, Model model) {
         model.addAttribute("project", super.get(getId(request)));
+        return "projectForm";
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("project", new Project(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), "", 1000));
         return "projectForm";
     }
 
