@@ -3,27 +3,28 @@ package local.ldwx.accounting.repository.inmemory;
 import local.ldwx.accounting.model.Project;
 import local.ldwx.accounting.repository.ProjectRepository;
 import local.ldwx.accounting.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
-public class InMemoryProjectRepository implements ProjectRepository {
+public class InMemoryProjectRepositoryImpl implements ProjectRepository {
+    private static final Logger log = LoggerFactory.getLogger(InMemoryProjectRepositoryImpl.class);
 
     private Map<Integer, Map<Integer, Project>> repository = new ConcurrentHashMap<>();
     private AtomicInteger counter = new AtomicInteger(0);
 
     @Override
     public Project save(Project project, int userId) {
+        Objects.requireNonNull(project, "project must not be null");
         Map<Integer, Project> projects = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         if (project.isNew()) {
             project.setId(counter.incrementAndGet());
@@ -51,8 +52,10 @@ public class InMemoryProjectRepository implements ProjectRepository {
     }
 
     @Override
-    public List<Project> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return getAllFiltered(userId, project -> Util.isBetween(project.getDateTime(), startDate, endDate));
+    public List<Project> getBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        Objects.requireNonNull(startDateTime, "startDateTime must not be null");
+        Objects.requireNonNull(endDateTime, "endDateTime must not be null");
+        return getAllFiltered(userId, project -> Util.isBetween(project.getDateTime(), startDateTime, endDateTime));
     }
 
     private List<Project> getAllFiltered(int userId, Predicate<Project> filter) {
