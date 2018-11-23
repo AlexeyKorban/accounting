@@ -36,7 +36,7 @@ public class JspProjectController extends AbstractProjectController{
     public String updateOrCreate(HttpServletRequest request) {
         Project project = new Project(LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
-                Integer.valueOf(request.getParameter("summ")));
+                Integer.valueOf(request.getParameter("sum")));
         if (request.getParameter("id").isEmpty()) {
             super.create(project);
         } else {

@@ -50,12 +50,12 @@
         </thead>
         <c:forEach items="${projects}" var="project">
             <jsp:useBean id="project" scope="page" type="local.ldwx.accounting.to.ProjectTo"/>
-            <tr data-mealExcess="${project.excess}">
+            <tr data-projectExcess="${project.excess}">
                 <td>
-                        <%--${project.dateTime.toLocalDate()} ${project.dateTime.toLocalTime()}--%>
-                        <%--<%=TimeUtil.toString(project.getDateTime())%>--%>
+                        ${project.dateTime.toLocalDate()} ${project.dateTime.toLocalTime()}
+<%--                        <%=TimeUtil.toString(project.getDateTime())%>--%>
                         <%--${fn:replace(project.dateTime, 'T', ' ')}--%>
-                        ${fn:formatDateTime(project.dateTime)}
+<%--                        ${fn:formatDateTime(project.dateTime)}--%>
                 </td>
                 <td>${project.description}</td>
                 <td>${project.sum}</td>

@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
@@ -20,11 +20,11 @@
     <form method="post" action="projects">
         <input type="hidden" name="id" value="${project.id}">
         <dl>
-            <dt><spring:message code="meal.dateTime"/>:</dt>
+            <dt><spring:message code="project.dateTime"/>:</dt>
             <dd><input type="datetime-local" value="${project.dateTime}" name="dateTime" required></dd>
         </dl>
         <dl>
-            <dt><spring:message code="meal.description"/>:</dt>
+            <dt><spring:message code="project.description"/>:</dt>
             <dd><input type="text" value="${project.description}" size=40 name="description" required></dd>
         </dl>
         <dl>

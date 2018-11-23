@@ -2,12 +2,15 @@ package local.ldwx.accounting.service;
 
 import local.ldwx.accounting.model.Project;
 import local.ldwx.accounting.util.exception.NotFoundException;
+import org.junit.Assume;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static java.time.LocalDateTime.of;
 import static local.ldwx.accounting.ProjectTestData.*;
 import static local.ldwx.accounting.UserTestData.ADMIN_ID;
 import static local.ldwx.accounting.UserTestData.USER_ID;
@@ -69,5 +72,13 @@ public abstract class AbstractProjectServiceTest extends AbstractServiceTest{
                 LocalDate.of(2018, Month.OCTOBER, 26),
                 LocalDate.of(2018, Month.OCTOBER, 26), USER_ID), PROJECT2, PROJECT1);
     }
-    
+
+    @Test
+    public void testValidation() throws Exception {
+        Assume.assumeTrue(isJpaBased());
+        validateRootCause(() -> service.create(new Project(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Project(null, null, "Description", 300), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Project(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9), USER_ID), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Project(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001), USER_ID), ConstraintViolationException.class);
+    }
 }
