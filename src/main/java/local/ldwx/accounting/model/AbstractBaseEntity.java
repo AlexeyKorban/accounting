@@ -1,5 +1,7 @@
 package local.ldwx.accounting.model;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 
 @MappedSuperclass
@@ -12,9 +14,9 @@ public abstract class AbstractBaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
 
-    public AbstractBaseEntity() {}
+    protected AbstractBaseEntity() {}
 
-    public AbstractBaseEntity(Integer id) {
+    protected AbstractBaseEntity(Integer id) {
         this.id = id;
     }
 
@@ -36,5 +38,22 @@ public abstract class AbstractBaseEntity {
                 "id=" + id +
                 ", class=" +getClass().getName() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !getClass().equals(Hibernate.getClass(o))) {
+            return false;
+        }
+        AbstractBaseEntity that = (AbstractBaseEntity) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id;
     }
 }
