@@ -21,6 +21,7 @@
     </appender>
 
     <logger name="local.ldwx.accounting" level="debug"/>
+    <logger name="org.springframework.web.servlet" level="debug"/>
 
     <root level="info">
         <appender-ref ref="file"/>
