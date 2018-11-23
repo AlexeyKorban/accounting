@@ -15,7 +15,7 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
+    <h3><a href="../../index.html">Home</a></h3>
     <h2>Projects</h2>
     <form method="post" action="projects?action=filter">
         <dl>
