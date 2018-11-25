@@ -9,7 +9,7 @@
 
     <function>
         <name>formatDateTime</name>
-        <function-class>local.ldwx.accounting.util.DateTimeUtil</function-class>
+        <function-class>ru.ldwx.accounting.util.DateTimeUtil</function-class>
         <function-signature>java.lang.String toString(java.time.LocalDateTime)</function-signature>
     </function>
 </taglib>

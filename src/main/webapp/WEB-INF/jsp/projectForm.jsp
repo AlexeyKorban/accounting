@@ -14,7 +14,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <section>
-    <jsp:useBean id="project" type="local.ldwx.accounting.model.Project" scope="request"/>
+    <jsp:useBean id="project" type="ru.ldwx.accounting.model.Project" scope="request"/>
     <h3><spring:message code="${project.isNew() ? 'project.add' : 'project.edit'}"/></h3>
     <hr>
     <form method="post" action="projects">

@@ -49,7 +49,7 @@
         </tr>
         </thead>
         <c:forEach items="${projects}" var="project">
-            <jsp:useBean id="project" scope="page" type="local.ldwx.accounting.to.ProjectTo"/>
+            <jsp:useBean id="project" scope="page" type="ru.ldwx.accounting.to.ProjectTo"/>
             <tr data-projectExcess="${project.excess}">
                 <td>
                         ${project.dateTime.toLocalDate()} ${project.dateTime.toLocalTime()}

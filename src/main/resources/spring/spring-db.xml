@@ -45,7 +45,7 @@
     </beans>
 
     <beans profile="jdbc">
-        <context:component-scan base-package="local.ldwx.accounting.**.repository.jdbc"/>
+        <context:component-scan base-package="ru.ldwx.accounting.**.repository.jdbc"/>
 
         <bean id="jdbsTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
             <constructor-arg ref="dataSource"/>
@@ -64,7 +64,7 @@
     <beans profile="jpa,datajpa">
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
-              p:packagesToScan="local.ldwx.**.model">
+              p:packagesToScan="ru.ldwx.**.model">
 
             <property name="jpaPropertyMap">
                 <map>
@@ -91,16 +91,16 @@
         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
               p:entityManagerFactory-ref="entityManagerFactory"/>
 
-        <bean class="local.ldwx.accounting.repository.JpaUtil"/>
+        <bean class="ru.ldwx.accounting.repository.JpaUtil"/>
     </beans>
 
     <beans profile="jpa">
-        <context:component-scan base-package="local.ldwx.**.repository.jpa"/>
+        <context:component-scan base-package="ru.ldwx.**.repository.jpa"/>
     </beans>
     
     <beans profile="datajpa">
-        <context:component-scan base-package="local.ldwx.**.repository.datajpa"/>
-        <jpa:repositories base-package="local.ldwx.**.repository.datajpa"/>
+        <context:component-scan base-package="ru.ldwx.**.repository.datajpa"/>
+        <jpa:repositories base-package="ru.ldwx.**.repository.datajpa"/>
     </beans>
 
 </beans>
