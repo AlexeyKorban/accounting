@@ -6,5 +6,5 @@ import org.springframework.test.context.ActiveProfiles;
 import static ru.ldwx.accounting.Profiles.JPA;
 
 @ActiveProfiles(JPA)
-public class JpaUserServiceTest extends AbstractJpaUserServiceTest {
+class JpaUserServiceTest extends AbstractJpaUserServiceTest {
 }

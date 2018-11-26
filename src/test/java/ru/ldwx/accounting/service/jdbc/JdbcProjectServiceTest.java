@@ -6,5 +6,5 @@ import org.springframework.test.context.ActiveProfiles;
 import static ru.ldwx.accounting.Profiles.JDBC;
 
 @ActiveProfiles(JDBC)
-public class JdbcProjectServiceTest extends AbstractProjectServiceTest {
+class JdbcProjectServiceTest extends AbstractProjectServiceTest {
 }
