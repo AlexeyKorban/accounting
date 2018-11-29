@@ -1,5 +1,6 @@
 package ru.ldwx.accounting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Range;
@@ -61,6 +62,7 @@ public class User extends AbstractNamedEntity{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("dateTime DESC")
+    @JsonIgnore
     protected List<Project> projects;
 
     public User() {}
