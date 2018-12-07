@@ -46,6 +46,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void update(Project project, int userId) {
+        Assert.notNull(project, "project must not be null");
         checkNotFoundWithId(repository.save(project, userId), project.getId());
     }
 
