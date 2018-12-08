@@ -7,10 +7,10 @@ import ru.ldwx.accounting.model.User;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static ru.ldwx.accounting.model.AbstractBaseEntity.START_SEQ;
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.ldwx.accounting.web.json.JsonUtil.writeIgnoreProps;
+import static ru.ldwx.accounting.TestUtil.readFromJsonMvcResult;
+import static ru.ldwx.accounting.TestUtil.readListFromJsonMvcResult;
+import static ru.ldwx.accounting.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
     public static final int USER_ID = START_SEQ;
@@ -31,11 +31,11 @@ public class UserTestData {
         assertThat(actual).usingElementComparatorIgnoringFields("registered", "projects").isEqualTo(expected);
     }
 
-    public static ResultMatcher contentJson(User... expected) {
-        return content().json(writeIgnoreProps(List.of(expected), "registered"));
+    public static ResultMatcher getUserMatcher(User... expected) {
+        return result -> assertMatch(readListFromJsonMvcResult(result, User.class), List.of(expected));
     }
 
-    public static ResultMatcher contentJson(User expected) {
-        return content().json(writeIgnoreProps(expected, "registered"));
+    public static ResultMatcher getUserMatcher(User expected) {
+        return result -> assertMatch(readFromJsonMvcResult(result, User.class), expected);
     }
 }
