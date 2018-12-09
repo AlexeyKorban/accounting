@@ -1,6 +1,7 @@
 package ru.ldwx.accounting.to;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class ProjectTo {
     private final Integer id;
@@ -50,5 +51,22 @@ public class ProjectTo {
                 ", sum=" + sum +
                 ", excess=" + excess +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProjectTo projectTo = (ProjectTo) o;
+        return sum == projectTo.sum &&
+                excess == projectTo.excess &&
+                Objects.equals(id, projectTo.id) &&
+                Objects.equals(dateTime, projectTo.dateTime) &&
+                Objects.equals(description, projectTo.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dateTime, description, sum, excess);
     }
 }

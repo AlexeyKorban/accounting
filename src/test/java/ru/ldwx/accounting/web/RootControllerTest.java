@@ -9,7 +9,9 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.ldwx.accounting.ProjectTestData.PROJECTS;
 import static ru.ldwx.accounting.UserTestData.*;
+import static ru.ldwx.accounting.util.ProjectsUtil.getWithExcess;
 
 public class RootControllerTest extends AbstractControllerTest {
 
@@ -27,5 +29,15 @@ public class RootControllerTest extends AbstractControllerTest {
                                 assertMatch(actual, ADMIN, USER);
                             }
                         }));
+    }
+
+    @Test
+    void testProjects() throws Exception{
+        mockMvc.perform(get("/projects"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("projects"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/projects.jsp"))
+                .andExpect(model().attribute("projects", getWithExcess(PROJECTS, SecurityUtil.authUserSumPerDay())));
     }
 }
