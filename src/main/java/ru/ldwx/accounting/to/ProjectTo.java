@@ -4,15 +4,18 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ProjectTo {
-    private final Integer id;
+    private Integer id;
 
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
-    private final String description;
+    private String description;
 
-    private final int sum;
+    private int sum;
 
-    private final boolean excess;
+    private boolean excess;
+
+    public ProjectTo() {
+    }
 
     public ProjectTo(Integer id, LocalDateTime dateTime, String description, int sum, boolean excess) {
         this.id = id;

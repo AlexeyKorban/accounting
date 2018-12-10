@@ -44,18 +44,18 @@ public abstract class AbstractProjectController {
         return ProjectsUtil.getWithExcess(service.getAll(userId), SecurityUtil.authUserSumPerDay());
     }
 
-    public Project create(Project meal) {
+    public Project create(Project project) {
         int userId = SecurityUtil.authUserId();
-        checkNew(meal);
-        log.info("create {} for user {}", meal, userId);
-        return service.create(meal, userId);
+        checkNew(project);
+        log.info("create {} for user {}", project, userId);
+        return service.create(project, userId);
     }
 
-    public void update(Project meal, int id) {
+    public void update(Project project, int id) {
         int userId = SecurityUtil.authUserId();
-        assureIdConsistent(meal, id);
-        log.info("update {} for user {}", meal, userId);
-        service.update(meal, userId);
+        assureIdConsistent(project, id);
+        log.info("update {} for user {}", project, userId);
+        service.update(project, userId);
     }
 
     /**

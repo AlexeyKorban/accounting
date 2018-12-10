@@ -1,14 +1,17 @@
 package ru.ldwx.accounting;
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.ldwx.accounting.model.Project;
+import ru.ldwx.accounting.to.ProjectTo;
 
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.time.LocalDateTime.of;
-import static ru.ldwx.accounting.model.AbstractBaseEntity.START_SEQ;
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.ldwx.accounting.TestUtil.readListFromJsonMvcResult;
+import static ru.ldwx.accounting.model.AbstractBaseEntity.START_SEQ;
 
 public class ProjectTestData {
     public static final int PROJECT1_ID = START_SEQ + 2;
@@ -43,5 +46,13 @@ public class ProjectTestData {
 
     public static void assertMatch(Iterable<Project> actual, Iterable<Project> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("user").isEqualTo(expected);
+    }
+
+    public static ResultMatcher getToMatcher(ProjectTo... expected) {
+        return getToMatcher(List.of(expected));
+    }
+
+    public static ResultMatcher getToMatcher(Iterable<ProjectTo> expected) {
+        return result -> assertThat(readListFromJsonMvcResult(result, ProjectTo.class)).isEqualTo(expected);
     }
 }
