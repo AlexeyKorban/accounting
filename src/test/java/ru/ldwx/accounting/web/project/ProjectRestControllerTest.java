@@ -79,10 +79,19 @@ class ProjectRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testGetBetween() throws Exception {
-        mockMvc.perform(get(REST_URL + "between?startDateTime=2018-10-27T10:00&endDateTime=2018-10-27T10:10:00"))
+    void testFilter() throws Exception {
+        mockMvc.perform(get(REST_URL + "filter")
+                .param("startDate", "2018-10-27").param("startTime", "10:00")
+                .param("endDate", "2018-10-27").param("endTime", "10:10"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(getToMatcher(createWithExcess(PROJECT4, false), createWithExcess(PROJECT3, false)));
+    }
+
+    @Test
+    void testFilterAll() throws Exception {
+        mockMvc.perform(get(REST_URL + "filter?startDate=&endTime="))
+                .andExpect(status().isOk())
+                .andExpect(getToMatcher(getWithExcess(PROJECTS, USER.getSumPerDay())));
     }
 }
