@@ -1,11 +1,10 @@
 package ru.ldwx.accounting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
-import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -24,7 +23,7 @@ import static ru.ldwx.accounting.util.ProjectsUtil.DEFAULT_SUM_PER_DAY;
 })
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity{
+public class User extends AbstractNamedEntity {
 
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.getByEmail";
@@ -64,7 +63,8 @@ public class User extends AbstractNamedEntity{
     @OrderBy("dateTime DESC")
     protected List<Project> projects;
 
-    public User() {}
+    public User() {
+    }
 
     public User(Integer id, String name, String email, String password, int sumPerDay, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);

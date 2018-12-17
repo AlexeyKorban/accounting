@@ -1,12 +1,8 @@
 package ru.ldwx.accounting.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -18,7 +14,8 @@ public abstract class AbstractBaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
 
-    protected AbstractBaseEntity() {}
+    protected AbstractBaseEntity() {
+    }
 
     protected AbstractBaseEntity(Integer id) {
         this.id = id;
@@ -40,7 +37,7 @@ public abstract class AbstractBaseEntity {
     public String toString() {
         return "AbstractBaseEntity{" +
                 "id=" + id +
-                ", class=" +getClass().getName() +
+                ", class=" + getClass().getName() +
                 '}';
     }
 

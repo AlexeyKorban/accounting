@@ -9,7 +9,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="spri" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
@@ -97,7 +96,6 @@
         </div>
     </div>
 </div>
-
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
