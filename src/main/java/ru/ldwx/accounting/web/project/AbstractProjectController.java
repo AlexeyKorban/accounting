@@ -69,12 +69,10 @@ public abstract class AbstractProjectController {
         log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
 
         List<Project> mealsDateFiltered = service.getBetweenDates(
-                startDate != null ? startDate : DateTimeUtil.MIN_DATE,
-                endDate != null ? endDate : DateTimeUtil.MAX_DATE, userId);
+                orElse(startDate, DateTimeUtil.MIN_DATE), orElse(endDate, DateTimeUtil.MAX_DATE), userId);
 
         return ProjectsUtil.getFilteredWithExcess(mealsDateFiltered, SecurityUtil.authUserSumPerDay(),
-                orElse(startTime, LocalTime.MIN),
-                orElse(endTime, LocalTime.MAX)
+                orElse(startTime, LocalTime.MIN), orElse(endTime, LocalTime.MAX)
         );
     }
 }

@@ -14,7 +14,7 @@
 <script type="text/javascript" src="resources/js/accounting.common.js" defer></script>
 <script type="text/javascript" src="resources/js/accounting.projects.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
-+
+
 <div class="jumbotron pt-4">
     <div class="container">
         <h3 class="text-center"><spring:message code="project.title"/></h3>
@@ -43,6 +43,10 @@
                 </form>
             </div>
             <div class="card-footer text-right">
+                <button class="btn btn-danger" onclick="clearFilter()">
+                    <span class="fa fa-remove"></span>
+                    <spring:message code="common.cancel"/>
+                </button>
                 <button class="btn btn-primary" onclick="updateFilteredTable()">
                     <span class="fa fa-filter"></span>
                     <spring:message code="project.filter"/>

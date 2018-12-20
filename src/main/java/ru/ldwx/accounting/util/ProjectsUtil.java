@@ -16,27 +16,27 @@ import static java.util.stream.Collectors.toList;
 public class ProjectsUtil {
     public static final int DEFAULT_SUM_PER_DAY = 2_000;
 
-    public static List<ProjectTo> getWithExcess(Collection<Project> projects, int caloriesPerDay) {
-        return getFilteredWithExcess(projects, caloriesPerDay, project -> true);
+    public static List<ProjectTo> getWithExcess(Collection<Project> projects, int sumPerDay) {
+        return getFilteredWithExcess(projects, sumPerDay, project -> true);
     }
 
-    public static List<ProjectTo> getFilteredWithExcess(Collection<Project> projects, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
-        return getFilteredWithExcess(projects, caloriesPerDay, meal -> Util.isBetween(meal.getTime(), startTime, endTime));
+    public static List<ProjectTo> getFilteredWithExcess(Collection<Project> projects, int sumPerDay, LocalTime startTime, LocalTime endTime) {
+        return getFilteredWithExcess(projects, sumPerDay, project -> Util.isBetween(project.getTime(), startTime, endTime));
     }
 
-    private static List<ProjectTo> getFilteredWithExcess(Collection<Project> projects, int caloriesPerDay, Predicate<Project> filter) {
-        Map<LocalDate, Integer> caloriesSumByDate = projects.stream()
+    private static List<ProjectTo> getFilteredWithExcess(Collection<Project> projects, int sumPerDay, Predicate<Project> filter) {
+        Map<LocalDate, Integer> mapSumPerDay = projects.stream()
                 .collect(
                         Collectors.groupingBy(Project::getDate, Collectors.summingInt(Project::getSum))
                 );
 
         return projects.stream()
                 .filter(filter)
-                .map(meal -> createWithExcess(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
+                .map(project -> createWithExcess(project, mapSumPerDay.get(project.getDate()) > sumPerDay))
                 .collect(toList());
     }
 
-    public static ProjectTo createWithExcess(Project meal, boolean Excess) {
-        return new ProjectTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getSum(), Excess);
+    public static ProjectTo createWithExcess(Project project, boolean Excess) {
+        return new ProjectTo(project.getId(), project.getDateTime(), project.getDescription(), project.getSum(), Excess);
     }
 }
