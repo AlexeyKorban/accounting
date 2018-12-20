@@ -1,41 +1,44 @@
-const ajaxUrl = "ajax/admin/users/";
-let datatableApi;
-
 $(function () {
-    datatableApi = $("#datatable").DataTable({
-        "paging": false,
-        "info": true,
-        "columns": [
-            {
-                "data": "name"
-            },
-            {
-                "data": "email"
-            },
-            {
-                "data": "roles"
-            },
-            {
-                "data": "enabled"
-            },
-            {
-                "data": "registered"
-            },
-            {
-                "defaultContent": "Edit",
-                "orderable": false
-            },
-            {
-                "defaultContent": "Delete",
-                "orderable": false
+    makeEditable({
+            ajaxUrl: "ajax/admin/users/",
+            datatableApi: $("#datatable").DataTable({
+                "paging": false,
+                "info": true,
+                "columns": [
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "email"
+                    },
+                    {
+                        "data": "roles"
+                    },
+                    {
+                        "data": "enabled"
+                    },
+                    {
+                        "data": "registered"
+                    },
+                    {
+                        "defaultContent": "Edit",
+                        "orderable": false
+                    },
+                    {
+                        "defaultContent": "Delete",
+                        "orderable": false
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "asc"
+                    ]
+                ]
+            }),
+            updateTable: function () {
+                $.get("ajax/admin/users/", updateTableByData);
             }
-        ],
-        "order": [
-            [
-                0,
-                "asc"
-            ]
-        ]
-    });
-    makeEditable();
+        }
+    );
 });
