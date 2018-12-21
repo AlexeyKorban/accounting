@@ -1,5 +1,6 @@
 package ru.ldwx.accounting.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.repository.UserRepository;
 import ru.ldwx.accounting.util.exception.NotFoundException;
@@ -58,6 +59,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return repository.getAll();
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Override
+    @Transactional
+    public void enable(int id, boolean enable) {
+        User user = get(id);
+        user.setEnabled(enable);
+        repository.save(user);
     }
 
     @Override

@@ -10,6 +10,10 @@ tr[data-projectExcess="true"] {
     cursor: pointer;
 }
 
+tr[data-userEnabled="false"] {
+    opacity: 0.3;
+}
+
 html {
     position: relative;
     min-height: 100%;

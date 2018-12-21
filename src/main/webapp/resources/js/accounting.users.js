@@ -1,6 +1,22 @@
+const userAjaxUrl = "ajax/admin/users/";
+
+function enable(chkbox, id) {
+    const enabled = chkbox.is(":checked");
+    $.ajax({
+        url: userAjaxUrl + id,
+        type: "POST",
+        data: "enabled=" + enabled
+    }).done(function () {
+        chkbox.closest("tr").attr("data-userEnabled", enabled);
+        successNoty(enabled ? "Enabled" : "Disabled");
+    }).fail(function () {
+        $(chkbox).prop("checked", !enabled);
+    });
+}
+
 $(function () {
     makeEditable({
-            ajaxUrl: "ajax/admin/users/",
+            ajaxUrl: userAjaxUrl,
             datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,
@@ -37,7 +53,7 @@ $(function () {
                 ]
             }),
             updateTable: function () {
-                $.get("ajax/admin/users/", updateTableByData);
+                $.get(userAjaxUrl, updateTableByData);
             }
         }
     );
