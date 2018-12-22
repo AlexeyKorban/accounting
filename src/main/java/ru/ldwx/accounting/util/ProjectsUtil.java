@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 public class ProjectsUtil {
-    public static final int DEFAULT_SUM_PER_DAY = 2_000;
+
+    private ProjectsUtil() {
+    }
 
     public static List<ProjectTo> getWithExcess(Collection<Project> projects, int sumPerDay) {
         return getFilteredWithExcess(projects, sumPerDay, project -> true);

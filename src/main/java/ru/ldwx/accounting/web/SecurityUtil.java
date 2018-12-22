@@ -2,7 +2,7 @@ package ru.ldwx.accounting.web;
 
 import ru.ldwx.accounting.model.AbstractBaseEntity;
 
-import static ru.ldwx.accounting.util.ProjectsUtil.DEFAULT_SUM_PER_DAY;
+import static ru.ldwx.accounting.util.UserUtil.DEFAULT_SUM_PER_DAY;
 
 public class SecurityUtil {
 

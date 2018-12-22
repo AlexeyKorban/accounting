@@ -3,8 +3,9 @@ package ru.ldwx.accounting.web.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.ldwx.accounting.model.Role;
 import ru.ldwx.accounting.model.User;
+import ru.ldwx.accounting.to.UserTo;
+import ru.ldwx.accounting.util.UserUtil;
 
 import java.util.List;
 
@@ -27,13 +28,9 @@ public class AdminAjaxController extends AbstractUserController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void createOrUpdate(@RequestParam("id") Integer id,
-                               @RequestParam("name") String name,
-                               @RequestParam("email") String email,
-                               @RequestParam("password") String password) {
-        User user = new User(id, name, email, password, Role.ROLE_USER);
-        if (user.isNew()) {
-            super.create(user);
+    public void createOrUpdate(UserTo userTo) {
+        if (userTo.isNew()) {
+            super.create(UserUtil.createNewFromTo(userTo));
         }
     }
 

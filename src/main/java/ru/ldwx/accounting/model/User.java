@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
-import static ru.ldwx.accounting.util.ProjectsUtil.DEFAULT_SUM_PER_DAY;
+import static ru.ldwx.accounting.util.UserUtil.DEFAULT_SUM_PER_DAY;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({
