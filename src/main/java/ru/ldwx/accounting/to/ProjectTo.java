@@ -3,8 +3,7 @@ package ru.ldwx.accounting.to;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class ProjectTo {
-    private Integer id;
+public class ProjectTo extends BaseTo {
 
     private LocalDateTime dateTime;
 
@@ -18,15 +17,11 @@ public class ProjectTo {
     }
 
     public ProjectTo(Integer id, LocalDateTime dateTime, String description, int sum, boolean excess) {
-        this.id = id;
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.sum = sum;
         this.excess = excess;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public LocalDateTime getDateTime() {

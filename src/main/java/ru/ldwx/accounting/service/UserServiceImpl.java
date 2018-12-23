@@ -3,6 +3,8 @@ package ru.ldwx.accounting.service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.repository.UserRepository;
+import ru.ldwx.accounting.to.UserTo;
+import ru.ldwx.accounting.util.UserUtil;
 import ru.ldwx.accounting.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -53,6 +55,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) {
         checkNotFoundWithId(repository.save(user), user.getId());
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    @Override
+    public void update(UserTo userTo) {
+        User user = get(userTo.getId());
+        repository.save(UserUtil.updateFromTo(user, userTo));
     }
 
     @Cacheable("users")

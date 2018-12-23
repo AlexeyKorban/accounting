@@ -5,6 +5,8 @@ import org.springframework.http.MediaType;
 import ru.ldwx.accounting.TestUtil;
 import ru.ldwx.accounting.model.Role;
 import ru.ldwx.accounting.model.User;
+import ru.ldwx.accounting.to.UserTo;
+import ru.ldwx.accounting.util.UserUtil;
 import ru.ldwx.accounting.web.AbstractControllerTest;
 import ru.ldwx.accounting.web.json.JsonUtil;
 
@@ -36,11 +38,11 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testUpdate() throws Exception {
-        User updated = new User(USER_ID, "newName", "newemail@ya.ru", "newPassword", Role.ROLE_USER);
+        UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertMatch(userService.getByEmail("newemail@ya.ru"), updated);
+        assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updatedTo));
     }
 }
