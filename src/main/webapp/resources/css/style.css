@@ -1,8 +1,8 @@
-tr[data-projectExcess="false"] {
+tr[data-mealExcess="false"] {
     color: green;
 }
 
-tr[data-projectExcess="true"] {
+tr[data-mealExcess="true"] {
     color: red;
 }
 
@@ -14,15 +14,32 @@ tr[data-userEnabled="false"] {
     opacity: 0.3;
 }
 
+.error, .message {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.error {
+    color: #a94442;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+}
+
+.message {
+    color: #2f9635;
+    background-color: #c6fbc2;
+    border: 1px solid #9feba6;
+}
+
+/*https://getbootstrap.com/docs/4.0/examples/sticky-footer/sticky-footer.css*/
 html {
     position: relative;
     min-height: 100%;
 }
-
 body {
-    margin-bottom: 60px;
+    margin-bottom: 60px; /* Margin bottom by footer height */
 }
-
 .footer {
     position: absolute;
     bottom: 0;
