@@ -1,6 +1,10 @@
 package ru.ldwx.accounting.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ldwx.accounting.AuthorizedUser;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.repository.UserRepository;
 import ru.ldwx.accounting.to.UserTo;
@@ -17,8 +21,8 @@ import java.util.List;
 import static ru.ldwx.accounting.util.ValidationUtil.checkNotFound;
 import static ru.ldwx.accounting.util.ValidationUtil.checkNotFoundWithId;
 
-@Service
-public class UserServiceImpl implements UserService {
+@Service("userService")
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
 
@@ -78,6 +82,15 @@ public class UserServiceImpl implements UserService {
         User user = get(id);
         user.setEnabled(enable);
         repository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if(user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
     }
 
     @Override

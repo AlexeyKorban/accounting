@@ -1,10 +1,16 @@
 package ru.ldwx.accounting.to;
 
+import org.hibernate.validator.constraints.Range;
+import ru.ldwx.accounting.util.UserUtil;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class UserTo extends BaseTo {
+public class UserTo extends BaseTo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @NotBlank
     @Size(min = 2, max = 100)
@@ -18,14 +24,19 @@ public class UserTo extends BaseTo {
     @Size(min = 5, max = 32, message = "length must between 5 and 32 characters")
     private String password;
 
+    @Range(min=10, max= 10000)
+    @NotNull
+    private Integer sumPerDay = UserUtil.DEFAULT_SUM_PER_DAY;
+
     public UserTo() {
     }
 
-    public UserTo(Integer id, String name, String email, String password) {
+    public UserTo(Integer id, String name, String email, String password, int sumPerDay) {
         super(id);
         this.name = name;
         this.email = email;
         this.password = password;
+        this.sumPerDay = sumPerDay;
     }
 
     public String getName() {
@@ -52,12 +63,17 @@ public class UserTo extends BaseTo {
         this.password = password;
     }
 
+    public Integer getSumPerDay() {
+        return sumPerDay;
+    }
+
     @Override
     public String toString() {
         return "UserTo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", sumPerDay='" + sumPerDay + '\'' +
                 '}';
     }
 }
