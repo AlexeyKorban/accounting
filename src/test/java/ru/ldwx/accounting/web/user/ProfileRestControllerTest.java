@@ -3,7 +3,6 @@ package ru.ldwx.accounting.web.user;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import ru.ldwx.accounting.TestUtil;
-import ru.ldwx.accounting.model.Role;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.to.UserTo;
 import ru.ldwx.accounting.util.UserUtil;
@@ -14,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.ldwx.accounting.TestUtil.userHttpBasic;
 import static ru.ldwx.accounting.UserTestData.*;
 import static ru.ldwx.accounting.web.user.ProfileRestController.REST_URL;
 
@@ -22,7 +22,8 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     @Test
     void testGet() throws Exception {
         TestUtil.print(
-                mockMvc.perform(get(REST_URL))
+                mockMvc.perform(get(REST_URL)
+                        .with(userHttpBasic(USER)))
                         .andExpect(status().isOk())
                         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                         .andExpect(getUserMatcher(USER))
@@ -30,8 +31,15 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void testGetUnAuth() throws Exception {
+        mockMvc.perform(get(REST_URL))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void testDelete() throws Exception {
-        mockMvc.perform(delete(REST_URL))
+        mockMvc.perform(delete(REST_URL)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
         assertMatch(userService.getAll(), ADMIN);
     }
@@ -40,6 +48,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     void testUpdate() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword", 1500);
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
