@@ -2,7 +2,7 @@ package ru.ldwx.accounting.to;
 
 import ru.ldwx.accounting.HasId;
 
-public class BaseTo implements HasId {
+public abstract class BaseTo implements HasId {
     protected Integer id;
 
     public BaseTo() {

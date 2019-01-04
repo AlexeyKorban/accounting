@@ -1,14 +1,16 @@
 package ru.ldwx.accounting.web.project;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.ldwx.accounting.model.Project;
 import ru.ldwx.accounting.to.ProjectTo;
+import ru.ldwx.accounting.util.ValidationUtil;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -23,6 +25,12 @@ public class ProjectAjaxController extends AbstractProjectController {
     }
 
     @Override
+    @GetMapping(value = "/{id}")
+    public Project get(@PathVariable("id") int id) {
+        return super.get(id);
+    }
+
+    @Override
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") int id) {
@@ -31,14 +39,16 @@ public class ProjectAjaxController extends AbstractProjectController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void createOrUpdate(@RequestParam("id") Integer id,
-                               @RequestParam("dateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
-                               @RequestParam("description") String description,
-                               @RequestParam("sum") int sum) {
-        Project project = new Project(id, dateTime, description, sum);
+    public ResponseEntity<String> createOrUpdate(@Valid Project project, BindingResult result) {
+        if (result.hasErrors()) {
+            return ValidationUtil.getErrorResponse(result);
+        }
         if (project.isNew()) {
             super.create(project);
+        } else {
+            super.update(project, project.getId());
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

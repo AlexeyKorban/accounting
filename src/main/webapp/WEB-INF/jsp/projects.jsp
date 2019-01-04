@@ -68,18 +68,6 @@
                 <th></th>
             </tr>
             </thead>
-            <c:forEach items="${projects}" var="project">
-                <jsp:useBean id="project" type="ru.ldwx.accounting.to.ProjectTo"/>
-                <tr data-projectExcess="${project.excess}">
-                    <td>
-                            ${project.dateTime.toLocalDate()} ${project.dateTime.toLocalTime()}
-                    </td>
-                    <td>${project.description}</td>
-                    <td>${project.sum}</td>
-                    <td><a><span class="fa fa-pencil"></span></a></td>
-                    <td><a onclick="deleteRow(${project.id})"><span class="fa fa-remove"></span></a></td>
-                </tr>
-            </c:forEach>
         </table>
     </div>
 </div>
@@ -88,7 +76,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="modalTitle"><spring:message code="project.add"/></h4>
+                <h4 class="modal-title" id="modalTitle"></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -129,4 +117,7 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+<jsp:include page="fragments/i18n.jsp">
+    <jsp:param name="page" value="project"/>
+</jsp:include>
 </html>

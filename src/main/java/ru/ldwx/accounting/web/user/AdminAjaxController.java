@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.to.UserTo;
 import ru.ldwx.accounting.util.UserUtil;
+import ru.ldwx.accounting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,22 +38,9 @@ public class AdminAjaxController extends AbstractUserController {
     }
 
     @PostMapping
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result) {
         if (result.hasErrors()) {
-            StringJoiner joiner = new StringJoiner("<br>");
-            result.getFieldErrors().forEach(
-                    fe -> {
-                        String msg = fe.getDefaultMessage();
-                        if (msg != null) {
-                            if (!msg.startsWith(fe.getField())) {
-                                msg = fe.getField() + ' ' + msg;
-                            }
-                            joiner.add(msg);
-                        }
-                    }
-            );
-            return new ResponseEntity<>(joiner.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+            return ValidationUtil.getErrorResponse(result);
         }
         if (userTo.isNew()) {
             super.create(UserUtil.createNewFromTo(userTo));

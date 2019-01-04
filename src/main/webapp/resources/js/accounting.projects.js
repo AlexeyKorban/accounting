@@ -1,25 +1,31 @@
+const projectAjaxUrl = "ajax/profile/projects/";
+
 function updateFilteredTable() {
     $.ajax({
         type: "GET",
-        url: "ajax/profile/projects/filter",
+        url: projectAjaxUrl + "filter",
         data: $("#filter").serialize()
     }).done(updateTableByData);
 }
 
 function clearFilter() {
     $("#filter")[0].reset();
-    $.get("ajax/profile/projects/", updateTableByData);
+    $.get(projectAjaxUrl, updateTableByData);
 }
 
 $(function () {
     makeEditable({
-        ajaxUrl: "ajax/profile/projects/",
-        datatableApi: $("#datatable").DataTable({
-            "paging": false,
-            "info": true,
+        ajaxUrl: projectAjaxUrl,
+        datatableOpts: {
             "columns": [
                 {
-                    "data": "dateTime"
+                    "data": "dateTime",
+                    "render": function (date, type, row) {
+                        if (type === 'display') {
+                            return date.replace('T', ' ').substr(0, 16);
+                        }
+                        return date;
+                    }
                 },
                 {
                     "data": "description"
@@ -28,11 +34,13 @@ $(function () {
                     "data": "sum"
                 },
                 {
-                    "defaultContent": "Edit",
+                    "render": renderEditBtn,
+                    "defaultContent": "",
                     "orderable": false
                 },
                 {
-                    "defaultContent": "Delete",
+                    "render": renderDeleteBtn,
+                    "defaultContent": "",
                     "orderable": false
                 }
             ],
@@ -41,8 +49,11 @@ $(function () {
                     0,
                     "desc"
                 ]
-            ]
-        }),
+            ],
+            "createdRow": function (row, data, dataIndex) {
+                $(row).attr("data-projectExcess", data.excess);
+            },
+        },
         updateTable: updateFilteredTable
     });
 });

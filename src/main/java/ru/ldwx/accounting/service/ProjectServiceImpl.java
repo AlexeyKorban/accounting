@@ -1,11 +1,10 @@
 package ru.ldwx.accounting.service;
 
-import ru.ldwx.accounting.model.Project;
-import ru.ldwx.accounting.repository.ProjectRepository;
-import ru.ldwx.accounting.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import ru.ldwx.accounting.model.Project;
+import ru.ldwx.accounting.repository.ProjectRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,12 +22,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project get(int id, int userId) throws NotFoundException {
+    public Project get(int id, int userId) {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     @Override
-    public void delete(int id, int userId) throws NotFoundException {
+    public void delete(int id, int userId) {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 

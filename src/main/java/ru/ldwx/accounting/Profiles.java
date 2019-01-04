@@ -19,7 +19,7 @@ public class Profiles {
         } catch (ClassNotFoundException ex) {
             try {
                 Class.forName("org.hsqldb.jdbcDriver");
-                return HSQL_DB;
+                return Profiles.HSQL_DB;
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException("Could not find DB driver");
             }

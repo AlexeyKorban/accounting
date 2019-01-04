@@ -1,15 +1,14 @@
 package ru.ldwx.accounting.web.project;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.ldwx.accounting.model.Project;
 import ru.ldwx.accounting.service.ProjectService;
 import ru.ldwx.accounting.to.ProjectTo;
 import ru.ldwx.accounting.util.DateTimeUtil;
 import ru.ldwx.accounting.util.ProjectsUtil;
 import ru.ldwx.accounting.web.SecurityUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,9 +18,8 @@ import static ru.ldwx.accounting.util.Util.orElse;
 import static ru.ldwx.accounting.util.ValidationUtil.assureIdConsistent;
 import static ru.ldwx.accounting.util.ValidationUtil.checkNew;
 
-@Controller
 public abstract class AbstractProjectController {
-    private static final Logger log = LoggerFactory.getLogger(AbstractProjectController.class);
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ProjectService service;

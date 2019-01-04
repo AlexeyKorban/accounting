@@ -2,13 +2,9 @@ package ru.ldwx.accounting.web.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static ru.ldwx.accounting.web.json.JacksonObjectMapper.getMapper;
 

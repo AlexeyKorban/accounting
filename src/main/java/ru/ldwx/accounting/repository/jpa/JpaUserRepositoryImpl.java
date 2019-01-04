@@ -1,11 +1,11 @@
 package ru.ldwx.accounting.repository.jpa;
 
-import ru.ldwx.accounting.model.User;
-import ru.ldwx.accounting.repository.UserRepository;
 import org.hibernate.jpa.QueryHints;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ldwx.accounting.model.User;
+import ru.ldwx.accounting.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,16 +30,16 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User get(int id) {
+        return em.find(User.class, id);
+    }
+
+    @Override
     @Transactional
     public boolean delete(int id) {
         return em.createNamedQuery(User.DELETE)
                 .setParameter("id", id)
                 .executeUpdate() != 0;
-    }
-
-    @Override
-    public User get(int id) {
-        return em.find(User.class, id);
     }
 
     @Override
@@ -53,7 +53,6 @@ public class JpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        return em.createNamedQuery(User.ALL_SORTED, User.class)
-                .getResultList();
+        return em.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
     }
 }

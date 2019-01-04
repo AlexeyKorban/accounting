@@ -1,17 +1,18 @@
 package ru.ldwx.accounting.repository.datajpa;
 
-import ru.ldwx.accounting.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ldwx.accounting.model.Project;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional(readOnly = true)
 public interface CrudProjectRepository extends JpaRepository<Project, Integer> {
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Project p WHERE p.id=:id AND p.user.id=:userId")

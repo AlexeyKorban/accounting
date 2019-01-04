@@ -5,12 +5,12 @@ import ru.ldwx.accounting.to.UserTo;
 import ru.ldwx.accounting.util.UserUtil;
 
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
-    private static long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private UserTo userTo;
 
     public AuthorizedUser(User user) {
-        super(user.getEmail(), user.getPassword(),user.isEnabled(), true,  true, true, user.getRoles());
+        super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, user.getRoles());
         this.userTo = UserUtil.asTo(user);
     }
 

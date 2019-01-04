@@ -28,8 +28,8 @@
     <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="conversionService">
         <property name="formatters">
             <set>
-                <bean class="ru.ldwx.accounting.web.converter.DateTimeFormatters.LocalDateFormatter"/>
                 <bean class="ru.ldwx.accounting.web.converter.DateTimeFormatters.LocalTimeFormatter"/>
+                <bean class="ru.ldwx.accounting.web.converter.DateTimeFormatters.LocalDateFormatter"/>
             </set>
         </property>
     </bean>

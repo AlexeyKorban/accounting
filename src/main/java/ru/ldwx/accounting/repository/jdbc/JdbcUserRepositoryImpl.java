@@ -1,8 +1,5 @@
 package ru.ldwx.accounting.repository.jdbc;
 
-import ru.ldwx.accounting.model.Role;
-import ru.ldwx.accounting.model.User;
-import ru.ldwx.accounting.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -13,6 +10,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import ru.ldwx.accounting.model.Role;
+import ru.ldwx.accounting.model.User;
+import ru.ldwx.accounting.repository.UserRepository;
 
 import java.util.*;
 
@@ -49,7 +49,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
             insertRoles(user);
         } else {
             if (namedParameterJdbcTemplate.update(
-                    "UPDATE users SET name=:name, email=:email, password=:password," +
+                    "UPDATE users SET name=:name, email=:email, password=:password, " +
                             "registered=:registered, enabled=:enabled, sum_per_day=:sumPerDay WHERE id=:id", parameterSource) == 0) {
                 return null;
             }
@@ -62,7 +62,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     @Override
     @Transactional
     public boolean delete(int id) {
-        return jdbcTemplate.update("DELETE  FROM users WHERE id=?", id) != 0;
+        return jdbcTemplate.update("DELETE FROM users WHERE id=?", id) != 0;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     private void insertRoles(User u) {
         Set<Role> roles = u.getRoles();
         if (!CollectionUtils.isEmpty(roles)) {
-            jdbcTemplate.batchUpdate("INSERT  INTO user_roles (user_id, role) VALUES (?, ?)", roles, roles.size(),
+            jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUES (?, ?)", roles, roles.size(),
                     (ps, role) -> {
                         ps.setInt(1, u.getId());
                         ps.setString(2, role.name());

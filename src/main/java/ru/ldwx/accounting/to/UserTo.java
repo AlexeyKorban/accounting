@@ -24,7 +24,7 @@ public class UserTo extends BaseTo implements Serializable {
     @Size(min = 5, max = 32, message = "length must between 5 and 32 characters")
     private String password;
 
-    @Range(min=10, max= 10000)
+    @Range(min = 10, max = 10000)
     @NotNull
     private Integer sumPerDay = UserUtil.DEFAULT_SUM_PER_DAY;
 
@@ -37,6 +37,14 @@ public class UserTo extends BaseTo implements Serializable {
         this.email = email;
         this.password = password;
         this.sumPerDay = sumPerDay;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -53,14 +61,6 @@ public class UserTo extends BaseTo implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Integer getSumPerDay() {

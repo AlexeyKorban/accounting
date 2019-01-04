@@ -3,6 +3,7 @@ package ru.ldwx.accounting.model;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,13 +22,13 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "projects", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "projects_unique_user_datetime_idx")})
 public class Project extends AbstractBaseEntity {
-
+    public static final String ALL_SORTED = "Project.getAll";
     public static final String DELETE = "Project.delete";
-    public static final String GET_BETWEEN = "Project.getAllBetween";
-    public static final String ALL_SORTED = "Project.getAllSorted";
+    public static final String GET_BETWEEN = "Project.getBetween";
 
     @Column(name = "date_time", nullable = false)
     @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
@@ -37,7 +38,8 @@ public class Project extends AbstractBaseEntity {
 
     @Column(name = "sum", nullable = false)
     @Range(min = 10, max = 5000)
-    private int sum;
+    @NotNull
+    private Integer sum;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -48,15 +50,15 @@ public class Project extends AbstractBaseEntity {
     public Project() {
     }
 
-    public Project(Integer id, LocalDateTime dateTime, String description, int summ) {
+    public Project(LocalDateTime dateTime, String description, int sum) {
+        this(null, dateTime, description, sum);
+    }
+
+    public Project(Integer id, LocalDateTime dateTime, String description, int sum) {
         super(id);
         this.dateTime = dateTime;
         this.description = description;
-        this.sum = summ;
-    }
-
-    public Project(LocalDateTime dateTime, String description, int summ) {
-        this(null, dateTime, description, summ);
+        this.sum = sum;
     }
 
     public LocalDateTime getDateTime() {
@@ -87,7 +89,7 @@ public class Project extends AbstractBaseEntity {
         this.description = description;
     }
 
-    public void setSum(int sum) {
+    public void setSum(Integer sum) {
         this.sum = sum;
     }
 

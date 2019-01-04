@@ -22,21 +22,19 @@ public abstract class AbstractBaseEntity implements HasId {
         this.id = id;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
     @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
     public String toString() {
-        return "AbstractBaseEntity{" +
-                "id=" + id +
-                ", class=" + getClass().getName() +
-                '}';
+        return String.format("Entity %s (%s)", getClass().getName(), id);
     }
 
     @Override

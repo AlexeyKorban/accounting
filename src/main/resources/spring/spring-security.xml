@@ -21,6 +21,7 @@
 
         <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
+
         <form-login login-page="/login" default-target-url="/projects"
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>

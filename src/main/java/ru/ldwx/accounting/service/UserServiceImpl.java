@@ -1,20 +1,19 @@
 package ru.ldwx.accounting.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import ru.ldwx.accounting.AuthorizedUser;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.repository.UserRepository;
 import ru.ldwx.accounting.to.UserTo;
 import ru.ldwx.accounting.util.UserUtil;
 import ru.ldwx.accounting.util.exception.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -55,9 +54,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
+    @Cacheable("users")
+    @Override
+    public List<User> getAll() {
+        return repository.getAll();
+    }
+
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public void update(User user) {
+        Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.getId());
     }
 
@@ -69,25 +75,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         repository.save(UserUtil.updateFromTo(user, userTo));
     }
 
-    @Cacheable("users")
-    @Override
-    public List<User> getAll() {
-        return repository.getAll();
-    }
 
     @CacheEvict(value = "users", allEntries = true)
     @Override
     @Transactional
-    public void enable(int id, boolean enable) {
+    public void enable(int id, boolean enabled) {
         User user = get(id);
-        user.setEnabled(enable);
+        user.setEnabled(enabled);
         repository.save(user);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = repository.getByEmail(email.toLowerCase());
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
         return new AuthorizedUser(user);

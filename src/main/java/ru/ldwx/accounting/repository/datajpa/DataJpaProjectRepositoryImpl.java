@@ -1,10 +1,10 @@
 package ru.ldwx.accounting.repository.datajpa;
 
-import ru.ldwx.accounting.model.Project;
-import ru.ldwx.accounting.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ldwx.accounting.model.Project;
+import ru.ldwx.accounting.repository.ProjectRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;

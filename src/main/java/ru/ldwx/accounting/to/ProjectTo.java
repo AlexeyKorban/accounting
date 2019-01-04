@@ -41,17 +41,6 @@ public class ProjectTo extends BaseTo {
     }
 
     @Override
-    public String toString() {
-        return "ProjectTo{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", sum=" + sum +
-                ", excess=" + excess +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -66,5 +55,16 @@ public class ProjectTo extends BaseTo {
     @Override
     public int hashCode() {
         return Objects.hash(id, dateTime, description, sum, excess);
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectTo{" +
+                "id=" + id +
+                ", dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                ", sum=" + sum +
+                ", excess=" + excess +
+                '}';
     }
 }

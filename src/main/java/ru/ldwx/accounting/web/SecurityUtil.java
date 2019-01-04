@@ -3,10 +3,8 @@ package ru.ldwx.accounting.web;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.ldwx.accounting.AuthorizedUser;
-import ru.ldwx.accounting.model.AbstractBaseEntity;
 
 import static java.util.Objects.requireNonNull;
-import static ru.ldwx.accounting.util.UserUtil.DEFAULT_SUM_PER_DAY;
 
 public class SecurityUtil {
 
@@ -24,7 +22,7 @@ public class SecurityUtil {
 
     public static AuthorizedUser get() {
         AuthorizedUser user = safeGet();
-        requireNonNull(user, "No authorised user found");
+        requireNonNull(user, "No authorized user found");
         return user;
     }
 

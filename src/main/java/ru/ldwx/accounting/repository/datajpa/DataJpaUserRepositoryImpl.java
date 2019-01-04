@@ -1,10 +1,10 @@
 package ru.ldwx.accounting.repository.datajpa;
 
-import ru.ldwx.accounting.model.User;
-import ru.ldwx.accounting.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+import ru.ldwx.accounting.model.User;
+import ru.ldwx.accounting.repository.UserRepository;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package ru.ldwx.accounting.web.user;
 
-import ru.ldwx.accounting.model.User;
-import ru.ldwx.accounting.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.ldwx.accounting.model.User;
+import ru.ldwx.accounting.service.UserService;
 import ru.ldwx.accounting.to.UserTo;
 
 import java.util.List;
