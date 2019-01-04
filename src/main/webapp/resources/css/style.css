@@ -1,8 +1,8 @@
-tr[data-mealExcess="false"] {
+tr[data-projectExcess="false"] {
     color: green;
 }
 
-tr[data-mealExcess="true"] {
+tr[data-projectExcess="true"] {
     color: red;
 }
 
