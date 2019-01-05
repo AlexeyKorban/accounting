@@ -14,8 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.ldwx.accounting.ProjectTestData.*;
-import static ru.ldwx.accounting.TestUtil.readFromJsonMvcResult;
-import static ru.ldwx.accounting.TestUtil.readFromJsonResultActions;
+import static ru.ldwx.accounting.TestUtil.*;
+import static ru.ldwx.accounting.UserTestData.ADMIN;
+import static ru.ldwx.accounting.UserTestData.ADMIN_ID;
 import static ru.ldwx.accounting.UserTestData.USER;
 import static ru.ldwx.accounting.model.AbstractBaseEntity.START_SEQ;
 import static ru.ldwx.accounting.util.ProjectsUtil.createWithExcess;
@@ -30,16 +31,24 @@ class ProjectRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testGet() throws Exception {
-        mockMvc.perform(get(REST_URL + PROJECT1_ID))
+        mockMvc.perform(get(REST_URL + ADMIN_PROJECT_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertMatch(readFromJsonMvcResult(result, Project.class), PROJECT1));
+                .andExpect(result -> assertMatch(readFromJsonMvcResult(result, Project.class), ADMIN_PROJECT1));
+    }
+
+    @Test
+    void testGetUnauth() throws Exception {
+        mockMvc.perform(get(REST_URL + PROJECT1_ID))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     void testDelete() throws Exception {
-        mockMvc.perform(delete(REST_URL + PROJECT1_ID))
+        mockMvc.perform(delete(REST_URL + PROJECT1_ID)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
         assertMatch(service.getAll(START_SEQ), PROJECT6, PROJECT5, PROJECT4, PROJECT3, PROJECT2);
     }
@@ -48,8 +57,10 @@ class ProjectRestControllerTest extends AbstractControllerTest {
     void testUpdate() throws Exception {
         Project updated = getUpdated();
 
-        mockMvc.perform(put(REST_URL + PROJECT1_ID).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+        mockMvc.perform(put(REST_URL + PROJECT1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated))
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
 
         assertMatch(service.get(PROJECT1_ID, START_SEQ), updated);
@@ -60,18 +71,20 @@ class ProjectRestControllerTest extends AbstractControllerTest {
         Project created = getCreated();
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(created)));
+                .content(JsonUtil.writeValue(created))
+                .with(userHttpBasic(ADMIN)));
 
         Project returned = readFromJsonResultActions(action, Project.class);
         created.setId(returned.getId());
 
         assertMatch(returned, created);
-        assertMatch(service.getAll(START_SEQ), created, PROJECT6, PROJECT5, PROJECT4, PROJECT3, PROJECT2, PROJECT1);
+        assertMatch(service.getAll(ADMIN_ID), created, ADMIN_PROJECT2, ADMIN_PROJECT1);
     }
 
     @Test
     void testGetAll() throws Exception {
-        mockMvc.perform(get(REST_URL))
+        mockMvc.perform(get(REST_URL)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -82,7 +95,8 @@ class ProjectRestControllerTest extends AbstractControllerTest {
     void testFilter() throws Exception {
         mockMvc.perform(get(REST_URL + "filter")
                 .param("startDate", "2018-10-27").param("startTime", "10:00")
-                .param("endDate", "2018-10-27").param("endTime", "10:10"))
+                .param("endDate", "2018-10-27").param("endTime", "10:10")
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(getToMatcher(createWithExcess(PROJECT4, false), createWithExcess(PROJECT3, false)));
@@ -90,7 +104,8 @@ class ProjectRestControllerTest extends AbstractControllerTest {
 
     @Test
     void testFilterAll() throws Exception {
-        mockMvc.perform(get(REST_URL + "filter?startDate=&endTime="))
+        mockMvc.perform(get(REST_URL + "filter?startDate=&endTime=")
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andExpect(getToMatcher(getWithExcess(PROJECTS, USER.getSumPerDay())));
     }

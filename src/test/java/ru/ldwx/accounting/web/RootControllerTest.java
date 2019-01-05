@@ -37,7 +37,6 @@ public class RootControllerTest extends AbstractControllerTest {
                 .with(userAuth(USER)))
                 .andDo(print())
                 .andExpect(view().name("projects"))
-                .andExpect(forwardedUrl("/WEB-INF/jsp/projects.jsp"))
-                .andExpect(model().attribute("projects", getWithExcess(PROJECTS, SecurityUtil.authUserSumPerDay())));
+                .andExpect(forwardedUrl("/WEB-INF/jsp/projects.jsp"));
     }
 }
