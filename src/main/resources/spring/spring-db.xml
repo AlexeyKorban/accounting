@@ -75,6 +75,9 @@
                     <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SECOND_LEVEL_CACHE}" value="true"/>
                     <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_QUERY_CACHE}" value="false"/>
 
+                    <entry key="javax.persistence.validation.group.pre-persist" value="ru.ldwx.accounting.View$Persist"/>
+                    <entry key="javax.persistence.validation.group.pre-update" value="ru.ldwx.accounting.View$Persist"/>
+
                 </map>
             </property>
 
