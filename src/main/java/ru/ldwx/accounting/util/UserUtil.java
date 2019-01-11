@@ -9,7 +9,7 @@ public class UserUtil {
     public static final int DEFAULT_SUM_PER_DAY = 2000;
 
     public static User createNewFromTo(UserTo newUser) {
-        return new User(null, newUser.getName(), newUser.getEmail(), newUser.getPassword(), Role.ROLE_USER);
+        return new User(null, newUser.getName(), newUser.getEmail(), newUser.getPassword(), newUser.getSumPerDay(), Role.ROLE_USER);
     }
 
     public static UserTo asTo(User user) {
@@ -19,6 +19,7 @@ public class UserUtil {
     public static User updateFromTo(User user, UserTo userTo) {
         user.setName(userTo.getName());
         user.setEmail(userTo.getEmail().toLowerCase());
+        user.setSumPerDay(userTo.getSumPerDay());
         user.setPassword(userTo.getPassword());
         return user;
     }

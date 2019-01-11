@@ -70,8 +70,8 @@ public class User extends AbstractNamedEntity {
         this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getSumPerDay(), u.isEnabled(), u.getRegistered(), u.getRoles());
     }
 
-    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, DEFAULT_SUM_PER_DAY, true, new Date(), EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, int sumPerDay, Role role, Role... roles) {
+        this(id, name, email, password, sumPerDay, true, new Date(), EnumSet.of(role, roles));
     }
 
     public User(Integer id, String name, String email, String password, int sumPerDay, boolean enabled, Date registered, Collection<Role> roles) {

@@ -67,6 +67,10 @@ public class UserTo extends BaseTo implements Serializable {
         return sumPerDay;
     }
 
+    public void setSumPerDay(Integer sumPerDay) {
+        this.sumPerDay = sumPerDay;
+    }
+
     @Override
     public String toString() {
         return "UserTo{" +
