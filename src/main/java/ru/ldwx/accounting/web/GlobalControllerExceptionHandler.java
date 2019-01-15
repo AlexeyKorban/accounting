@@ -18,9 +18,9 @@ public class GlobalControllerExceptionHandler {
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         log.error("Exception at request " + req.getRequestURL(), e);
         ModelAndView mav = new ModelAndView("exception/exception");
-        Throwable rootCase = ValidationUtil.getRootCause(e);
-        mav.addObject("exception", rootCase);
-        mav.addObject("message", rootCase.toString());
+        Throwable rootCause = ValidationUtil.getRootCause(e);
+        mav.addObject("exception", rootCause);
+        mav.addObject("message", ValidationUtil.getMessage(rootCause));
 
         AuthorizedUser authorizedUser = SecurityUtil.safeGet();
         if (authorizedUser != null) {
