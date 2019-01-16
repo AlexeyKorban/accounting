@@ -1,5 +1,7 @@
 package ru.ldwx.accounting.util;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import ru.ldwx.accounting.model.Role;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.to.UserTo;
@@ -21,6 +23,13 @@ public class UserUtil {
         user.setEmail(userTo.getEmail().toLowerCase());
         user.setSumPerDay(userTo.getSumPerDay());
         user.setPassword(userTo.getPassword());
+        return user;
+    }
+
+    public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
+        String password = user.getPassword();
+        user.setPassword(StringUtils.isEmpty(password) ? password : passwordEncoder.encode(password));
+        user.setEmail(user.getEmail().toLowerCase());
         return user;
     }
 }
