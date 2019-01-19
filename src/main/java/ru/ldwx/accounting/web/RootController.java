@@ -34,7 +34,7 @@ public class RootController extends AbstractUserController {
     }
 
     @GetMapping("/projects")
-    public String projects(Model model) {
+    public String projects() {
         return "projects";
     }
 

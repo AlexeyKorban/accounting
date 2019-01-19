@@ -5,11 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.ldwx.accounting.ProjectTestData.PROJECTS;
 import static ru.ldwx.accounting.TestUtil.userAuth;
 import static ru.ldwx.accounting.UserTestData.ADMIN;
 import static ru.ldwx.accounting.UserTestData.USER;
-import static ru.ldwx.accounting.util.ProjectsUtil.getWithExcess;
 
 public class RootControllerTest extends AbstractControllerTest {
 

@@ -79,7 +79,7 @@ public abstract class AbstractProjectServiceTest extends AbstractServiceTest {
 
     @Test
     void testValidation() throws Exception {
-        Assumptions.assumeTrue(isJpaBased());
+        Assumptions.assumeTrue(isJpaBased(), "Validation not supported (only for JPA");
         validateRootCause(() -> service.create(new Project(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Project(null, null, "Description", 300), USER_ID), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Project(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9), USER_ID), ConstraintViolationException.class);

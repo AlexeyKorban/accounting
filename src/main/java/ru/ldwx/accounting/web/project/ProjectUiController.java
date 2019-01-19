@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/ajax/profile/projects")
-public class ProjectAjaxController extends AbstractProjectController {
+public class ProjectUiController extends AbstractProjectController {
 
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +48,7 @@ public class ProjectAjaxController extends AbstractProjectController {
         } else {
             super.update(project, project.getId());
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @Override

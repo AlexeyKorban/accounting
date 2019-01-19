@@ -7,13 +7,9 @@ import ru.ldwx.accounting.model.User;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.ldwx.accounting.ProjectTestData.ADMIN_PROJECT1;
-import static ru.ldwx.accounting.ProjectTestData.PROJECTS;
-import static ru.ldwx.accounting.ProjectTestData.assertMatch;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static ru.ldwx.accounting.ProjectTestData.*;
 
 public class JsonUtilTest {
 
@@ -37,7 +33,7 @@ public class JsonUtilTest {
     void testWriteOnlyAccess() throws Exception {
         String json = JsonUtil.writeValue(UserTestData.USER);
         System.out.println(json);
-        assertThat(json, not(containsString("password")));
+        assertFalse(json.contains("password"));
         String jsonWithPass = UserTestData.jsonWithPassword(UserTestData.USER, "newPass");
         System.out.println(jsonWithPass);
         User user = JsonUtil.readValue(jsonWithPass, User.class);
