@@ -2,13 +2,11 @@ package ru.ldwx.accounting.web.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.to.UserTo;
 import ru.ldwx.accounting.util.UserUtil;
-import ru.ldwx.accounting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,16 +35,12 @@ public class AdminUiController extends AbstractUserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result) {
-        if (result.hasErrors()) {
-            return ValidationUtil.getErrorResponse(result);
-        }
+    public void createOrUpdate(@Valid UserTo userTo, BindingResult result) {
         if (userTo.isNew()) {
             super.create(UserUtil.createNewFromTo(userTo));
         } else {
             super.update(userTo, userTo.getId());
         }
-        return ResponseEntity.ok().build();
     }
 
     @Override

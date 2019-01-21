@@ -9,6 +9,7 @@ import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.to.UserTo;
 import ru.ldwx.accounting.util.UserUtil;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static ru.ldwx.accounting.web.SecurityUtil.authUserId;
@@ -31,7 +32,7 @@ public class ProfileRestController extends AbstractUserController {
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<User> register(@RequestBody UserTo userTo) {
+    public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
         User created = super.create(UserUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -42,7 +43,7 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo) {
+    public void update(@Valid @RequestBody UserTo userTo) {
         super.update(userTo, authUserId());
     }
 

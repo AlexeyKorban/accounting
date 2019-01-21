@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.ldwx.accounting.model.Project;
 import ru.ldwx.accounting.to.ProjectTo;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -40,12 +41,12 @@ public class ProjectRestController extends AbstractProjectController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Project project, @PathVariable("id") int id) {
+    public void update(@Valid @RequestBody Project project, @PathVariable("id") int id) {
         super.update(project, id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Project> createWithLocation(@RequestBody Project project) {
+    public ResponseEntity<Project> createWithLocation(@Valid @RequestBody Project project) {
         Project created = super.create(project);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

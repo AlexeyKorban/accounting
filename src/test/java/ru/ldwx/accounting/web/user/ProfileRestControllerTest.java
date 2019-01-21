@@ -7,12 +7,14 @@ import ru.ldwx.accounting.TestUtil;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.to.UserTo;
 import ru.ldwx.accounting.util.UserUtil;
+import ru.ldwx.accounting.util.exception.ErrorType;
 import ru.ldwx.accounting.web.AbstractControllerTest;
 import ru.ldwx.accounting.web.json.JsonUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.ldwx.accounting.TestUtil.readFromJsonResultActions;
 import static ru.ldwx.accounting.TestUtil.userHttpBasic;
@@ -72,5 +74,18 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updatedTo));
+    }
+
+    @Test
+    void testUpdateInvalid() throws Exception {
+        UserTo updatedTo = new UserTo(null, null, "password", null, 1500);
+
+        mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
     }
 }

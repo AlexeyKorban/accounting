@@ -6,12 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.ldwx.accounting.model.Project;
 import ru.ldwx.accounting.service.ProjectService;
+import ru.ldwx.accounting.util.exception.ErrorType;
 import ru.ldwx.accounting.web.AbstractControllerTest;
 import ru.ldwx.accounting.web.json.JsonUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.ldwx.accounting.ProjectTestData.*;
 import static ru.ldwx.accounting.TestUtil.*;
@@ -123,5 +125,31 @@ class ProjectRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andExpect(getToMatcher(getWithExcess(PROJECTS, USER.getSumPerDay())));
+    }
+
+    @Test
+    void testCreateInvalid() throws Exception {
+        Project invalid = new Project(null, null, "Dummy", 200);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
+    }
+
+    @Test
+    void testUpdateInvalid() throws Exception {
+        Project invalid = new Project(PROJECT1_ID, null, null, 6000);
+        mockMvc.perform(put(REST_URL + PROJECT1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andDo(print());
     }
 }
