@@ -1,5 +1,6 @@
 package ru.ldwx.accounting.web;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,11 +48,15 @@ public class RootController extends AbstractUserController {
     public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
             return "profile";
-        } else {
+        }
+        try {
             super.update(userTo, SecurityUtil.authUserId());
             SecurityUtil.get().update(userTo);
             status.setComplete();
-            return "redirect:projects";
+            return "redirect:meals";
+        } catch (DataIntegrityViolationException ex) {
+            result.rejectValue("email", EXCEPTION_DUPLICATE_EMAIL);
+            return "profile";
         }
     }
 
