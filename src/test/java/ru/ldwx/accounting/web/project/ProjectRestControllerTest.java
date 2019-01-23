@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ldwx.accounting.model.Project;
 import ru.ldwx.accounting.service.ProjectService;
 import ru.ldwx.accounting.util.exception.ErrorType;
@@ -23,6 +25,7 @@ import static ru.ldwx.accounting.UserTestData.USER;
 import static ru.ldwx.accounting.model.AbstractBaseEntity.START_SEQ;
 import static ru.ldwx.accounting.util.ProjectsUtil.createWithExcess;
 import static ru.ldwx.accounting.util.ProjectsUtil.getWithExcess;
+import static ru.ldwx.accounting.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_DATETIME;
 
 class ProjectRestControllerTest extends AbstractControllerTest {
 
@@ -136,7 +139,7 @@ class ProjectRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
                 .andDo(print());
     }
 
@@ -149,7 +152,36 @@ class ProjectRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.type").value(ErrorType.VALIDATION_ERROR.name()))
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
                 .andDo(print());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void testUpdateDuplicate() throws Exception {
+        Project invalid = new Project(PROJECT1_ID, PROJECT2.getDateTime(), "Dummy", 200);
+
+        mockMvc.perform(put(REST_URL + PROJECT1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(detailMessage(EXCEPTION_DUPLICATE_DATETIME));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void testCreateDuplicate() throws Exception {
+        Project invalid = new Project(null, ADMIN_PROJECT1.getDateTime(), "Dummy", 200);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(detailMessage(EXCEPTION_DUPLICATE_DATETIME));
     }
 }

@@ -3,7 +3,6 @@ package ru.ldwx.accounting.web;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,8 @@ import ru.ldwx.accounting.util.UserUtil;
 import ru.ldwx.accounting.web.user.AbstractUserController;
 
 import javax.validation.Valid;
+
+import static ru.ldwx.accounting.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 
 @Controller
 public class RootController extends AbstractUserController {
