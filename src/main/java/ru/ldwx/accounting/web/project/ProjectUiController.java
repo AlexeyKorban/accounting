@@ -2,11 +2,12 @@ package ru.ldwx.accounting.web.project;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.ldwx.accounting.View;
 import ru.ldwx.accounting.model.Project;
 import ru.ldwx.accounting.to.ProjectTo;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ProjectUiController extends AbstractProjectController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void createOrUpdate(@Valid Project project) {
+    public void createOrUpdate(@Validated(View.Web.class) Project project) {
         if (project.isNew()) {
             super.create(project);
         } else {

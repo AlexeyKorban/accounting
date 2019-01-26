@@ -12,6 +12,8 @@ import ru.ldwx.accounting.util.exception.ErrorType;
 import ru.ldwx.accounting.web.AbstractControllerTest;
 import ru.ldwx.accounting.web.json.JsonUtil;
 
+import java.time.LocalDateTime;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -25,6 +27,7 @@ import static ru.ldwx.accounting.UserTestData.USER;
 import static ru.ldwx.accounting.model.AbstractBaseEntity.START_SEQ;
 import static ru.ldwx.accounting.util.ProjectsUtil.createWithExcess;
 import static ru.ldwx.accounting.util.ProjectsUtil.getWithExcess;
+import static ru.ldwx.accounting.util.exception.ErrorType.VALIDATION_ERROR;
 import static ru.ldwx.accounting.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_DATETIME;
 
 class ProjectRestControllerTest extends AbstractControllerTest {
@@ -139,7 +142,7 @@ class ProjectRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(errorType(VALIDATION_ERROR))
                 .andDo(print());
     }
 
@@ -152,7 +155,20 @@ class ProjectRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(errorType(VALIDATION_ERROR))
+                .andDo(print());
+    }
+
+    @Test
+    void testUpdateHtmlUnsafe() throws Exception {
+        Project invalid = new Project(PROJECT1_ID, LocalDateTime.now(), "<script>alert(123)</script>", 200);
+        mockMvc.perform(put(REST_URL + PROJECT1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid))
+                .with(userHttpBasic(USER)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR))
                 .andDo(print());
     }
 
@@ -167,7 +183,7 @@ class ProjectRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isConflict())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(errorType(VALIDATION_ERROR))
                 .andExpect(detailMessage(EXCEPTION_DUPLICATE_DATETIME));
     }
 
@@ -181,7 +197,7 @@ class ProjectRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isConflict())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(errorType(VALIDATION_ERROR))
                 .andExpect(detailMessage(EXCEPTION_DUPLICATE_DATETIME));
     }
 }

@@ -1,6 +1,7 @@
 package ru.ldwx.accounting.to;
 
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.SafeHtml;
 import ru.ldwx.accounting.util.UserUtil;
 
 import javax.validation.constraints.Email;
@@ -14,11 +15,13 @@ public class UserTo extends BaseTo implements Serializable {
 
     @NotBlank
     @Size(min = 2, max = 100)
+    @SafeHtml
     private String name;
 
     @Email
     @NotBlank
     @Size(max = 100)
+    @SafeHtml
     private String email;
 
     @Size(min = 5, max = 32)

@@ -3,6 +3,7 @@ package ru.ldwx.accounting.model;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.ldwx.accounting.View;
 import ru.ldwx.accounting.util.DateTimeUtil;
@@ -36,6 +37,7 @@ public class Project extends AbstractBaseEntity {
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
+    @SafeHtml(groups = {View.Web.class})
     private String description;
 
     @Column(name = "sum", nullable = false)
