@@ -10,6 +10,9 @@ public class UserUtil {
 
     public static final int DEFAULT_SUM_PER_DAY = 2000;
 
+    private UserUtil() {
+    }
+
     public static User createNewFromTo(UserTo newUser) {
         return new User(null, newUser.getName(), newUser.getEmail(), newUser.getPassword(), newUser.getSumPerDay(), Role.ROLE_USER);
     }
