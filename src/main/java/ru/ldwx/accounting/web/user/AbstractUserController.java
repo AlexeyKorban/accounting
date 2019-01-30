@@ -3,9 +3,13 @@ package ru.ldwx.accounting.web.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import ru.ldwx.accounting.Profiles;
+import ru.ldwx.accounting.model.AbstractBaseEntity;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.service.UserService;
 import ru.ldwx.accounting.to.UserTo;
+import ru.ldwx.accounting.util.exception.ModificationRestrictionException;
 
 import java.util.List;
 
@@ -17,6 +21,13 @@ public abstract class AbstractUserController {
 
     @Autowired
     private UserService service;
+
+    private boolean modificationRestriction;
+
+    @Autowired
+    public void setEnvironment(Environment environment) {
+        modificationRestriction = environment.acceptsProfiles(Profiles.HEROKU);
+    }
 
     public List<User> getAll() {
         log.info("getAll");
@@ -36,18 +47,21 @@ public abstract class AbstractUserController {
 
     public void delete(int id) {
         log.info("delete {}", id);
+        checkModificationAllowed(id);
         service.delete(id);
     }
 
     public void update(User user, int id) {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
+        checkModificationAllowed(id);
         service.update(user);
     }
 
     public void update(UserTo userTo, int id) {
         log.info("update {} with id={}", userTo, id);
         assureIdConsistent(userTo, id);
+        checkModificationAllowed(id);
         service.update(userTo);
     }
 
@@ -58,6 +72,13 @@ public abstract class AbstractUserController {
 
     public void enable(int id, boolean enabled) {
         log.info(enabled ? "enable {}" : "disable {}", id);
+        checkModificationAllowed(id);
         service.enable(id, enabled);
+    }
+
+    private void checkModificationAllowed(int id) {
+        if (modificationRestriction && id < AbstractBaseEntity.START_SEQ + 2) {
+            throw new ModificationRestrictionException();
+        }
     }
 }

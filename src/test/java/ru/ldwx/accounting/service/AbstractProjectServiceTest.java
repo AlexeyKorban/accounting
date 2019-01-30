@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.ldwx.accounting.model.Project;
+import ru.ldwx.accounting.util.exception.ErrorType;
 import ru.ldwx.accounting.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -12,6 +13,7 @@ import java.time.Month;
 
 import static java.time.LocalDateTime.of;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.ldwx.accounting.ProjectTestData.*;
 import static ru.ldwx.accounting.UserTestData.ADMIN_ID;
 import static ru.ldwx.accounting.UserTestData.USER_ID;
@@ -61,8 +63,11 @@ public abstract class AbstractProjectServiceTest extends AbstractServiceTest {
 
     @Test
     void updateNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () ->
-        service.update(PROJECT1, ADMIN_ID));
+        NotFoundException e = assertThrows(NotFoundException.class, () -> service.update(PROJECT1, ADMIN_ID));
+        String msg = e.getMessage();
+        assertTrue(msg.contains(ErrorType.DATA_NOT_FOUND.name()));
+        assertTrue(msg.contains(NotFoundException.NOT_FOUND_EXCEPTION));
+        assertTrue(msg.contains(String.valueOf(PROJECT1_ID)));
     }
 
     @Test
