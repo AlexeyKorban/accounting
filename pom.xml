@@ -386,15 +386,15 @@
                             <execution>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>unpack</goal>
+                                    <goal>copy</goal>
                                 </goals>
                                 <configuration>
                                     <artifactItems>
                                         <artifactItem>
                                             <groupId>com.github.jsimone</groupId>
-                                            <artifactId>webapp-runner</artifactId>
+                                            <artifactId>webapp-runner-main</artifactId>
                                             <version>9.0.14.0</version>
-                                            <excludes>META-INF/services/javax.cache.spi.CachingProvider</excludes>
+                                            <destFileName>webapp-runner.jar</destFileName>
                                         </artifactItem>
                                     </artifactItems>
                                 </configuration>
