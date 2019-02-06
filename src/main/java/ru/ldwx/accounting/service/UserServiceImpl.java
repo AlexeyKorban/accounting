@@ -13,7 +13,6 @@ import ru.ldwx.accounting.AuthorizedUser;
 import ru.ldwx.accounting.model.User;
 import ru.ldwx.accounting.repository.UserRepository;
 import ru.ldwx.accounting.to.UserTo;
-import ru.ldwx.accounting.util.UserUtil;
 import ru.ldwx.accounting.util.exception.NotFoundException;
 
 import java.util.List;
